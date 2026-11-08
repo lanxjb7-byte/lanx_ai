@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#08080d">
+<title>LanxX Looksmax AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080d;--panel:#13131c;--panel2:#1b1b26;--red:#ff3152;--text:#f5f5f8;--muted:#9999a8;--line:#2a2a38}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}body{min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#3a101d 0,transparent 48%),var(--bg)}button,input{font:inherit}button{cursor:pointer}
+#intro{position:fixed;inset:0;z-index:20;background:radial-gradient(ellipse at center,#29101a,#08080d 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .55s,visibility .55s}
+.intro-logo{font:800 clamp(42px,12vw,76px) Orbitron;letter-spacing:4px;display:flex;overflow:hidden}
+.intro-logo span{display:inline-block;opacity:0;filter:blur(7px)}
+.intro-logo .left{transform:translateX(-110vw);animation:fromLeft 1.05s cubic-bezier(.2,.8,.2,1) .25s forwards}
+.intro-logo .right{transform:translateX(110vw);animation:fromRight 1.05s cubic-bezier(.2,.8,.2,1) .25s forwards;color:var(--red)}
+@keyframes fromLeft{to{transform:translateX(0);opacity:1;filter:blur(0)}}@keyframes fromRight{to{transform:translateX(0);opacity:1;filter:blur(0)}}
+.intro-sub{color:#aaa;font-size:11px;letter-spacing:3px;margin:14px 0 34px;text-align:center}
+.go-btn{background:var(--red);color:white;border:0;border-radius:12px;padding:15px 27px;font:700 12px Orbitron;letter-spacing:1px;box-shadow:0 0 28px #ff315244}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.app{max-width:850px;margin:auto;padding-bottom:35px;min-height:100vh}
+header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;border-bottom:1px solid #ffffff10;background:#09090ddc;position:sticky;top:0;z-index:5;backdrop-filter:blur(15px)}
+.brand{font:800 17px Orbitron;letter-spacing:1px}.brand span{color:var(--red)}
+.nav{display:flex;gap:8px}.nav button{background:transparent;color:#aaa;border:1px solid transparent;border-radius:9px;padding:9px 12px;font-size:11px}.nav button.active{color:white;border-color:#71303e;background:#241018}
+main{padding:20px 14px}.welcome{padding:19px;border:1px solid #40202b;border-radius:17px;background:linear-gradient(135deg,#241019,#12121a);margin-bottom:14px}.eyebrow{font:600 10px Orbitron;color:#ff788d;letter-spacing:2px}.welcome h1{font:700 clamp(21px,5vw,30px) Orbitron;margin:9px 0}.welcome p{font-size:12px;line-height:1.65;color:#b8b8c4;margin:0}
+.chat-card{border:1px solid var(--line);border-radius:17px;background:linear-gradient(150deg,#171720,#101017);overflow:hidden}
+.chat-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.bot-avatar{width:36px;height:36px;border-radius:11px;background:#3a1420;display:grid;place-items:center;color:#ff8498;font:700 17px Orbitron}.chat-head b{font-size:12px}.online{font-size:10px;color:#69d6a3;margin-top:3px}
+.chatlog{height:min(55vh,510px);min-height:300px;overflow:auto;padding:15px;display:flex;flex-direction:column;gap:11px}
+.bubble{max-width:88%;padding:11px 13px;border-radius:13px;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}.bot{align-self:flex-start;background:#252530;border:1px solid #363644}.user{align-self:flex-end;background:#702338;border:1px solid #873149}
+.chat-form{padding:12px;border-top:1px solid var(--line);display:flex;gap:8px}.chat-form input{min-width:0;flex:1;background:#09090f;border:1px solid #383845;color:white;border-radius:11px;padding:13px;outline:none;font-size:12px}.chat-form input:focus{border-color:var(--red)}.send{background:var(--red);color:white;border:0;border-radius:11px;padding:0 17px;font-weight:700}
+.quick{display:flex;gap:7px;flex-wrap:wrap;padding:0 13px 13px}.quick button{background:#20151b;color:#ff9aaa;border:1px solid #56303a;border-radius:30px;padding:8px 10px;font-size:10px}
+.login-panel{display:none;border:1px solid var(--line);border-radius:17px;background:var(--panel);padding:22px;text-align:center;margin-top:16px}.login-panel.show{display:block}.google-btn{display:flex;align-items:center;justify-content:center;gap:11px;background:#fff;color:#222;border:0;border-radius:11px;padding:13px 16px;width:100%;font-weight:700;font-size:12px;margin-top:15px}.google-icon{width:18px;height:18px}
+.status{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}.userbar{display:flex;align-items:center;gap:8px;color:#bbb;font-size:10px}.userbar img{width:25px;height:25px;border-radius:50%;object-fit:cover}.logout{background:none;border:1px solid #444;color:#ccc;border-radius:8px;padding:6px 8px;font-size:10px}
+.disclaimer{font-size:10px;color:#777;line-height:1.6;padding:13px 4px}
+.hidden{display:none!important}
+@media(min-width:650px){main{padding:26px}.chatlog{height:500px}}
+</style>
+</head>
+<body>
+<div id="intro">
+  <div class="intro-logo"><span class="left">Lan</span><span class="right">xX</span></div>
+  <div class="intro-sub">LOOKSMAX AI ASSISTANT</div>
+  <button class="go-btn" id="goChat">GO TO CHAT&nbsp; →</button>
+</div>
+
+<div class="app">
+<header>
+  <div class="brand">Lanx<span>X</span></div>
+  <nav class="nav"><button id="chatNav" class="active">CHAT</button><button id="loginNav">LOGIN</button></nav>
+  <div id="userbar" class="userbar hidden"></div>
+</header>
+<main>
+  <section class="welcome">
+    <div class="eyebrow">PERSONAL GROOMING • HEALTHY HABITS</div>
+    <h1>LOOKSMAX CHAT AI</h1>
+    <p>Teman ngobrol untuk skincare dasar, grooming, kebersihan, gaya rambut, dan rutinitas sehat. Tanya apa pun—AI akan bantu dengan saran yang realistis dan aman.</p>
+  </section>
+
+  <section id="chatView" class="chat-card">
+    <div class="chat-head"><div class="bot-avatar">LX</div><div><b>LanxX Looksmax AI</b><div class="online">● AI ASSISTANT READY</div></div></div>
+    <div id="chatlog" class="chatlog">
+      <div class="bubble bot">HAI 👋 GW AI CHAT BOT LOOKSMAX BUATAN LanxX</div>
+    </div>
+    <div class="quick">
+      <button data-prompt="Buatkan routine skincare pagi dan malam yang sederhana.">Skincare routine</button>
+      <button data-prompt="Buatkan grooming routine mingguan yang aman dan realistis.">Grooming routine</button>
+      <button data-prompt="Buatkan routine rambut agar tetap bersih dan terawat.">Hair care</button>
+      <button data-prompt="Jelaskan cara menjaga postur dan kebiasaan sehat tanpa latihan berlebihan.">Healthy habits</button>
+    </div>
+    <form id="chatForm" class="chat-form"><input id="message" maxlength="1200" placeholder="Tanya looksmax routine..." autocomplete="off" required><button class="send" id="sendBtn">➤</button></form>
+  </section>
+
+  <section id="loginView" class="login-panel">
+    <div class="bot-avatar" style="margin:auto">LX</div>
+    <h2 style="font:700 17px Orbitron">LOGIN LANXX</h2>
+    <p class="status">Masuk menggunakan akun Google untuk menggunakan chatbot. Profil hanya dipakai untuk status login.</p>
+    <button id="googleLogin" class="google-btn">
+      <svg class="google-icon" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.9c-.58 2.96-2.25 5.48-4.72 7.18l7.62 5.91c4.45-4.1 7.18-10.14 7.18-17.56z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.89l-7.62-5.91c-2.12 1.42-4.83 2.26-8.28 2.26-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 43.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div id="authStatus" class="status">Firebase belum dikonfigurasi.</div>
+  </section>
+
+  <div class="disclaimer">Catatan: AI ini berfokus pada perawatan diri yang sehat. AI tidak memberi skor ketampanan, membandingkan bentuk tubuh/wajah, atau menjanjikan perubahan struktur tulang. Hindari mengirim informasi pribadi. Saran umum bukan pengganti tenaga kesehatan.</div>
+</main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+// Firebase Web App config LANXX LOOKSMAX CHAT
+const firebaseConfig = {
+  apiKey: "AIzaSyDjxpu-f4u22t9dbKCZSEYO5eK02lHttE0",
+  authDomain: "chat-bot-ai-lanx.firebaseapp.com",
+  projectId: "chat-bot-ai-lanx",
+  storageBucket: "chat-bot-ai-lanx.firebasestorage.app",
+  messagingSenderId: "34225737698",
+  appId: "1:34225737698:web:d398c5208d7bbb6a5133bb",
+  measurementId: "G-RW253RDFZW"
+};
+
+const $=id=>document.getElementById(id);
+let auth=null, currentUser=null;
+const firebaseReady = !Object.values(firebaseConfig).some(v=>String(v).startsWith("GANTI_"));
+if(firebaseReady){
+  try{
+    const app=initializeApp(firebaseConfig);
+    auth=getAuth(app);
+    const provider=new GoogleAuthProvider();
+    provider.setCustomParameters({prompt:"select_account"});
+    onAuthStateChanged(auth,user=>{
+      currentUser=user;
+      renderAuth();
+    });
+    getRedirectResult(auth).catch(err=>{$("authStatus").textContent=authError(err);});
+    $("googleLogin").addEventListener("click",async()=>{
+      $("authStatus").textContent="Membuka Google Login...";
+      try{await signInWithPopup(auth,provider);}
+      catch(err){
+        if(["auth/popup-blocked","auth/popup-closed-by-user","auth/operation-not-supported-in-this-environment"].includes(err.code)){
+          try{await signInWithRedirect(auth,provider);}catch(e){$("authStatus").textContent=authError(e);}
+        }else $("authStatus").textContent=authError(err);
+      }
+    });
+  }catch(e){$("authStatus").textContent="Firebase error: "+e.message;}
+}else{
+  $("authStatus").textContent="Masukkan Firebase Web App config di index.html terlebih dahulu.";
+  $("googleLogin").disabled=true;
+}
+function authError(e){return e?.message||"Login gagal. Periksa konfigurasi Firebase.";}
+function renderAuth(){
+  const bar=$("userbar");
+  if(currentUser){
+    bar.classList.remove("hidden");
+    bar.innerHTML="";
+    if(currentUser.photoURL){const img=document.createElement("img");img.src=currentUser.photoURL;img.alt="";bar.appendChild(img);}
+    const name=document.createElement("span");name.textContent=currentUser.displayName||currentUser.email||"Google user";bar.appendChild(name);
+    const out=document.createElement("button");out.className="logout";out.textContent="LOGOUT";out.onclick=()=>signOut(auth);bar.appendChild(out);
+    $("authStatus").textContent="Login berhasil.";
+    $("loginNav").textContent="ACCOUNT";
+  }else{
+    bar.classList.add("hidden");$("loginNav").textContent="LOGIN";
+    if(firebaseReady)$("authStatus").textContent="Belum login.";
+  }
+}
+function showView(view){
+  const isLogin=view==="login";
+  $("chatView").classList.toggle("hidden",isLogin);
+  $("loginView").classList.toggle("show",isLogin);
+  $("chatNav").classList.toggle("active",!isLogin);
+  $("loginNav").classList.toggle("active",isLogin);
+}
+$("chatNav").addEventListener("click",()=>showView("chat"));
+$("loginNav").addEventListener("click",()=>showView("login"));
+$("goChat").addEventListener("click",()=>{$("intro").classList.add("hide");showView("chat");});
+document.querySelectorAll(".quick button").forEach(b=>b.addEventListener("click",()=>{$("message").value=b.dataset.prompt;$("message").focus();}));
+
+function bubble(text,who){
+  const d=document.createElement("div");d.className="bubble "+who;d.textContent=text;$("chatlog").appendChild(d);$("chatlog").scrollTop=$("chatlog").scrollHeight;return d;
+}
+async function sendMessage(text){
+  if(!currentUser){showView("login");$("authStatus").textContent="Login Google dulu untuk mulai chat.";return;}
+  bubble(text,"user");
+  const wait=bubble("LanxX AI sedang mengetik...","bot");
+  $("sendBtn").disabled=true;
+  try{
+    const token=await currentUser.getIdToken();
+    const res=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({message:text})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||"HTTP "+res.status);
+    wait.textContent=data.reply||"Belum ada jawaban.";
+  }catch(e){wait.textContent="Gagal menghubungi AI: "+e.message;}
+  $("sendBtn").disabled=false;
+}
+$("chatForm").addEventListener("submit",e=>{e.preventDefault();const input=$("message");const text=input.value.trim();if(!text)return;input.value="";sendMessage(text);});
+</script>
+</body>
+</html>
